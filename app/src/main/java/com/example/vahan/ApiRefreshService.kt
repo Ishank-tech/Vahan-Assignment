@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.vahan.MainActivity.Data.colleges
@@ -24,7 +25,7 @@ class ApiRefreshService: Service() {
             val repository = (application as CollegeApplication).collegeRepository
             CoroutineScope(Dispatchers.IO).launch {
                 repository.getColleges()
-                colleges.addAll(repository.colleges.value!!)
+                repository.colleges.value?.let { colleges.addAll(it) }
                 Log.d("ISHANK", colleges.size.toString())
             }
             handler?.postDelayed(this, 10000) // 10 seconds
